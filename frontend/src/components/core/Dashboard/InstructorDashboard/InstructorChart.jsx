@@ -27,6 +27,8 @@ export default function InstructorChart({ courses }) {
       {
         data: courses.map((course) => course.totalStudentsEnrolled),
         backgroundColor: generateRandomColors(courses.length),
+        borderWidth: 2,
+        borderColor: "rgb(0, 0, 0)",
       },
     ],
   }
@@ -38,6 +40,8 @@ export default function InstructorChart({ courses }) {
       {
         data: courses.map((course) => course.totalAmountGenerated),
         backgroundColor: generateRandomColors(courses.length),
+        borderWidth: 2,
+        borderColor: "rgb(0, 0, 0)",
       },
     ],
   }
@@ -45,6 +49,35 @@ export default function InstructorChart({ courses }) {
   // Options for the chart
   const options = {
     maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: {
+          color: 'rgb(255, 255, 255)',
+          font: {
+            size: 12,
+            family: "'Inter', sans-serif"
+          },
+          padding: 20
+        }
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleColor: 'white',
+        bodyColor: 'white',
+        padding: 10,
+        displayColors: true,
+        callbacks: {
+          label: function(context) {
+            const label = context.label || '';
+            const value = context.raw || 0;
+            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+            const percentage = Math.round((value / total) * 100);
+            return `${label}: ${value} (${percentage}%)`;
+          }
+        }
+      }
+    }
   }
 
   return (
@@ -55,10 +88,11 @@ export default function InstructorChart({ courses }) {
         {/* Button to switch to the "students" chart */}
         <button
           onClick={() => setCurrChart("students")}
-          className={`rounded-sm p-1 px-3 transition-all duration-200 ${currChart === "students"
-            ? "bg-richblack-700 text-yellow-50"
-            : "text-yellow-400"
-            }`}
+          className={`rounded-sm p-1 px-3 transition-all duration-200 ${
+            currChart === "students"
+              ? "bg-richblack-700 text-yellow-50"
+              : "text-yellow-400"
+          }`}
         >
           Students
         </button>
@@ -66,16 +100,17 @@ export default function InstructorChart({ courses }) {
         {/* Button to switch to the "income" chart */}
         <button
           onClick={() => setCurrChart("income")}
-          className={`rounded-sm p-1 px-3 transition-all duration-200 ${currChart === "income"
-            ? "bg-richblack-700 text-yellow-50"
-            : "text-yellow-400"
-            }`}
+          className={`rounded-sm p-1 px-3 transition-all duration-200 ${
+            currChart === "income"
+              ? "bg-richblack-700 text-yellow-50"
+              : "text-yellow-400"
+          }`}
         >
           Income
         </button>
       </div>
 
-      <div className="relative mx-auto aspect-square h-full w-full">
+      <div className="relative mx-auto h-[300px] w-full max-w-[500px]">
         {/* Render the Pie chart based on the selected chart */}
         <Pie
           data={currChart === "students" ? chartDataStudents : chartIncomeData}

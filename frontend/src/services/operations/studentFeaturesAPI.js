@@ -64,7 +64,7 @@ export async function buyCourse(token, coursesId, userDetails, navigate, dispatc
             key: RAZORPAY_KEY,
             amount: orderResponse.data.message.amount,
             currency: orderResponse.data.message.currency,
-            name: "StudyNotion",
+            name: "Learnism",
             description: "Course Purchase",
             order_id: orderResponse.data.message.id,
             image: rzpLogo,

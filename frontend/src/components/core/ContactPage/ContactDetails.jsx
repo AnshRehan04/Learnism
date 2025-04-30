@@ -23,6 +23,10 @@ const contactDetails = [
     description: "Mon - Fri From 8am to 5pm",
     details: "+123 456 7869",
   },
+  {
+    name: "Email Us",
+    details: "info@learnism.com",
+  },
 ]
 
 
